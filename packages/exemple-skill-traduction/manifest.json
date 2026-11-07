@@ -1,0 +1,10 @@
+{
+  "name": "exemple-skill-traduction",
+  "version": "0.1.0",
+  "type": "skill",
+  "author": "ThibautGRAS",
+  "description": "Skill d'exemple : traduit un texte du français vers l'anglais en conservant le ton et la mise en forme.",
+  "tags": ["exemple", "traduction", "langue"],
+  "assistants": ["claude", "copilot", "opencode"],
+  "entry": "SKILL.md"
+}

@@ -1,5 +1,37 @@
 {
+  "schemaVersion": 1,
+  "genereLe": "2026-11-07T15:16:46+00:00",
   "packages": [
+    {
+      "name": "exemple-agent-revue",
+      "version": "0.1.0",
+      "type": "agent",
+      "author": "ThibautGRAS",
+      "description": "Agent d'exemple : relit un document et liste les incohérences, les oublis et les phrases ambiguës.",
+      "tags": [
+        "exemple",
+        "relecture",
+        "qualite"
+      ],
+      "assistants": [
+        "claude",
+        "opencode"
+      ],
+      "compatibilite": [
+        {
+          "assistant": "claude",
+          "testeLe": null
+        },
+        {
+          "assistant": "opencode",
+          "testeLe": null
+        }
+      ],
+      "extrait": "Agent de relecture 1. Lire le document en entier avant de commenter. 2. Lister séparément : incohérences (chiffres, termes, dates), oublis évidents, phrases ambiguës. 3. Pour chaque point : citer le…",
+      "creeLe": null,
+      "modifieLe": null,
+      "path": "packages/exemple-agent-revue"
+    },
     {
       "name": "exemple-skill",
       "version": "0.1.0",
@@ -15,8 +47,59 @@
         "copilot",
         "opencode"
       ],
-      "entry": "SKILL.md",
+      "compatibilite": [
+        {
+          "assistant": "claude",
+          "testeLe": null
+        },
+        {
+          "assistant": "copilot",
+          "testeLe": null
+        },
+        {
+          "assistant": "opencode",
+          "testeLe": null
+        }
+      ],
+      "extrait": "Synthèse en 5 points 1. Lire le texte fourni en entier. 2. Produire au plus 5 puces, une idée par puce, en français. 3. Ne rien ajouter qui ne figure pas dans le texte. 4. Si le texte est trop court…",
+      "creeLe": "2026-11-07",
+      "modifieLe": "2026-11-07",
       "path": "packages/exemple-skill"
+    },
+    {
+      "name": "exemple-skill-traduction",
+      "version": "0.1.0",
+      "type": "skill",
+      "author": "ThibautGRAS",
+      "description": "Skill d'exemple : traduit un texte du français vers l'anglais en conservant le ton et la mise en forme.",
+      "tags": [
+        "exemple",
+        "traduction",
+        "langue"
+      ],
+      "assistants": [
+        "claude",
+        "copilot",
+        "opencode"
+      ],
+      "compatibilite": [
+        {
+          "assistant": "claude",
+          "testeLe": null
+        },
+        {
+          "assistant": "copilot",
+          "testeLe": null
+        },
+        {
+          "assistant": "opencode",
+          "testeLe": null
+        }
+      ],
+      "extrait": "Traduction FR vers EN 1. Traduire l'intégralité du texte, sans résumer ni omettre. 2. Conserver la mise en forme (titres, listes, gras). 3. Garder les noms propres, sigles et valeurs numériques tels…",
+      "creeLe": null,
+      "modifieLe": null,
+      "path": "packages/exemple-skill-traduction"
     }
   ]
 }

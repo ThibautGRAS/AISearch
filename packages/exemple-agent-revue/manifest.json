@@ -1,0 +1,10 @@
+{
+  "name": "exemple-agent-revue",
+  "version": "0.1.0",
+  "type": "agent",
+  "author": "ThibautGRAS",
+  "description": "Agent d'exemple : relit un document et liste les incohérences, les oublis et les phrases ambiguës.",
+  "tags": ["exemple", "relecture", "qualite"],
+  "assistants": ["claude", "opencode"],
+  "entry": "AGENT.md"
+}
