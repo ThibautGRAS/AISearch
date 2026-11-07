@@ -1,0 +1,22 @@
+{
+  "packages": [
+    {
+      "name": "exemple-skill",
+      "version": "0.1.0",
+      "type": "skill",
+      "author": "ThibautGRAS",
+      "description": "Skill d'exemple : synthétise un texte en 5 points. Sert de modèle pour les nouveaux paquets.",
+      "tags": [
+        "exemple",
+        "synthese"
+      ],
+      "assistants": [
+        "claude",
+        "copilot",
+        "opencode"
+      ],
+      "entry": "SKILL.md",
+      "path": "packages/exemple-skill"
+    }
+  ]
+}
