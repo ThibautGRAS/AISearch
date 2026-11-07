@@ -151,6 +151,24 @@ try {
     assert.ok(await page.locator('.proches li').count() >= 1, 'pas de paquet proche')
   })
 
+  await etape('archive .zip téléchargeable', async () => {
+    const lien = page.locator('a.zip')
+    const href = await lien.getAttribute('href')
+    assert.match(href, /paquets\/exemple-agent-revue\.zip$/)
+    const rep = await page.request.get(new URL(href, page.url()).href)
+    assert.equal(rep.status(), 200)
+    const octets = await rep.body()
+    assert.equal(octets.subarray(0, 2).toString(), 'PK', 'pas une archive zip')
+  })
+
+  await etape('page Contribuer : lien de proposition de paquet', async () => {
+    await page.goto(`${BASE}#/contribuer`)
+    const href = await page.getByRole('link', { name: /Proposer un paquet/ }).getAttribute('href')
+    assert.match(href, /issues\/new\?template=proposer-un-paquet\.yml$/)
+    await page.goBack()
+    await page.locator('article > header h1').waitFor()
+  })
+
   await etape('le markdown est assaini (aucun script injecté)', async () => {
     assert.equal(await page.locator('.markdown script').count(), 0)
     assert.equal(await page.locator('.markdown [onerror], .markdown [onclick]').count(), 0)

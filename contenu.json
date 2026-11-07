@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "genereLe": "2026-11-07T15:41:57+00:00",
+  "genereLe": "2026-11-07T15:55:00+00:00",
   "contenus": {
     "exemple-agent-revue": {
       "entree": "# Agent de relecture\n\n1. Lire le document en entier avant de commenter.\n2. Lister séparément : incohérences (chiffres, termes, dates), oublis évidents, phrases ambiguës.\n3. Pour chaque point : citer le passage, expliquer le problème en une phrase.\n4. Ne rien corriger sans demande ; proposer au plus une reformulation par point.\n5. Si rien n'est trouvé, le dire explicitement.\n",
@@ -15,5 +15,5 @@
       "readme": "# exemple-skill-traduction\n\nModèle de skill de traduction français vers anglais.\n\n## Exemple d'usage\n« Traduis en anglais : `<texte>` »\n\n## Historique\n- 0.1.0 : version initiale (non testée sur un assistant réel).\n"
     }
   },
-  "contribuer": "# Contribuer\n\n## Flux\n- Une branche par paquet ou changement, relue par l'autre personne avant fusion.\n- Versionnage `MAJEUR.MINEUR.CORRECTIF` dans `manifest.json`, changement noté dans le README du paquet.\n\n## Checklist de revue\n- [ ] Aucun secret, jeton, chemin personnel.\n- [ ] `manifest.json` complet (nom, version, type, auteur, description, assistants).\n- [ ] Description claire : quand utiliser le paquet, quand ne pas l'utiliser.\n- [ ] Au moins un cas d'essai dans `tests/` et un exemple d'usage dans le README.\n- [ ] Testé sur au moins un assistant ; ne pas déclarer un assistant compatible sans l'avoir essayé.\n- [ ] `catalog.json` régénéré.\n"
+  "contribuer": "# Contribuer\n\n## Flux\n- Toute modification de `main` passe par une pull request (depuis un fork ou une branche) ; chaque fusion republie le site.\n- Sans Git : l'onglet *Issues* propose un formulaire « Proposer un paquet ».\n- Une branche par paquet ou changement, relue par l'autre personne avant fusion.\n- Versionnage `MAJEUR.MINEUR.CORRECTIF` dans `manifest.json`, changement noté dans le README du paquet.\n\n## Checklist de revue\n- [ ] Aucun secret, jeton, chemin personnel.\n- [ ] `manifest.json` complet (nom, version, type, auteur, description, assistants).\n- [ ] Description claire : quand utiliser le paquet, quand ne pas l'utiliser.\n- [ ] Au moins un cas d'essai dans `tests/` et un exemple d'usage dans le README.\n- [ ] Testé sur au moins un assistant ; ne pas déclarer un assistant compatible sans l'avoir essayé.\n- [ ] `catalog.json` régénéré.\n"
 }

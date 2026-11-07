@@ -1,12 +1,14 @@
 """Valide les paquets et génère le catalogue.
 
 Sorties (racine du dépôt, puis copie dans site/public/) :
+  - paquets/<nom>.zip : archive de chaque paquet (site/public/ uniquement)
   - catalog.json : index léger (cartes de recherche)
   - contenu.json : textes complets (SKILL.md/AGENT.md + README) et CONTRIBUTING.md, chargés à la demande
 """
 import json
 import re
 import subprocess
+import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -41,6 +43,17 @@ def dates_git(dossier: Path):
 
     dates = log()
     return (dates[-1], dates[0]) if dates else (None, None)
+
+
+def archiver(dossier: Path, sortie: Path):
+    """Zip reproductible d'un paquet (horodatage fixe : même contenu, même archive)."""
+    sortie.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(sortie, "w", zipfile.ZIP_DEFLATED) as z:
+        for f in sorted(dossier.rglob("*")):
+            if f.is_file():
+                info = zipfile.ZipInfo(f"{dossier.name}/{f.relative_to(dossier).as_posix()}", (2026, 1, 1, 0, 0, 0))
+                info.compress_type = zipfile.ZIP_DEFLATED
+                z.writestr(info, f.read_bytes())
 
 
 def corps_markdown(texte: str) -> str:
@@ -127,7 +140,9 @@ def main():
             "creeLe": cree,
             "modifieLe": modifie,
             "path": f"packages/{dossier.name}",
+            "archive": f"paquets/{dossier.name}.zip",
         })
+        archiver(dossier, RACINE / "site" / "public" / "paquets" / f"{dossier.name}.zip")
         contenus[d["name"]] = {"entree": corps_markdown(texte_entree), "readme": readme}
 
     if erreurs:

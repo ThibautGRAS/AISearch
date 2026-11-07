@@ -1,0 +1,39 @@
+name: Proposer un paquet
+description: Suggérer un skill, un agent ou un connecteur à ajouter au catalogue
+title: "[Paquet] "
+labels: ["paquet"]
+body:
+  - type: input
+    id: nom
+    attributes:
+      label: Nom du paquet
+      description: En minuscules, chiffres et tirets (ex. redaction-rapport).
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type
+      options: [skill, agent, connecteur]
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: À quoi sert-il ?
+      description: Quand l'utiliser, quand ne pas l'utiliser.
+    validations:
+      required: true
+  - type: textarea
+    id: contenu
+    attributes:
+      label: Contenu proposé
+      description: Collez ici le texte du skill ou de l'agent (rien de confidentiel, le dépôt est public).
+  - type: checkboxes
+    id: verifs
+    attributes:
+      label: Vérifications
+      options:
+        - label: Le contenu ne contient aucun secret ni donnée interne.
+          required: true
+        - label: Je l'ai essayé dans au moins un assistant (précisez lequel ci-dessus).

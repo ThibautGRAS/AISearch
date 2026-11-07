@@ -65,6 +65,12 @@
             </button>
           </div>
         {/each}
+        {#if paquet.archive}
+          <p class="aide sans-git">
+            Sans Git : <a class="zip" href={`${import.meta.env.BASE_URL}${paquet.archive}`} download>télécharger l'archive (.zip)</a>,
+            puis placer les fichiers à la main selon l'assistant.
+          </p>
+        {/if}
       </section>
 
       {#if !contenuCharge}
@@ -127,6 +133,7 @@
   h2 { font-size: 1.15rem; margin: 1.5rem 0 0.7rem; }
   .principal > section:first-child h2, aside h2:first-child { margin-top: 0; }
   .aide { color: var(--texte-doux); margin: 0 0 0.6rem; font-size: 0.95rem; }
+  .sans-git { margin-top: 0.8rem; }
   .commande { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
   .commande code { flex: 1 1 18rem; background: var(--code-bg); padding: 0.6rem 0.8rem; border-radius: 10px; font-size: 0.85rem; overflow-x: auto; white-space: nowrap; }
   .commande button {

@@ -23,6 +23,11 @@
   <li>Ouvrir une branche et demander une relecture.</li>
 </ol>
 
+<p>
+  <a class="bouton" href={`${DEPOT}/issues/new?template=proposer-un-paquet.yml`} rel="noopener">Proposer un paquet ↗</a>
+  <span class="intro">Un formulaire GitHub, sans rien installer.</span>
+</p>
+
 {#if !charge}
   <p class="intro">Chargement de la checklist…</p>
 {:else if texte}
@@ -36,6 +41,7 @@
   .intro { color: var(--texte-doux); max-width: 44rem; }
   .etapes { max-width: 44rem; padding-left: 1.3rem; }
   .etapes li { margin-bottom: 0.4rem; }
+  .bouton { display: inline-block; margin-right: 0.8rem; padding: 0.55rem 1.2rem; border-radius: 99px; background: var(--accent); color: var(--sur-accent); text-decoration: none; font-weight: 600; }
   code { background: var(--code-bg); padding: 0.1rem 0.35rem; border-radius: 5px; font-size: 0.9em; }
   .carte { background: var(--surface); border: 1px solid var(--bordure); border-radius: var(--rayon); padding: 1rem 1.3rem; box-shadow: var(--ombre); max-width: 44rem; margin-bottom: 4rem; }
 </style>

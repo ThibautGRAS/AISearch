@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "genereLe": "2026-11-07T15:41:57+00:00",
+  "genereLe": "2026-11-07T15:55:00+00:00",
   "packages": [
     {
       "name": "exemple-agent-revue",
@@ -30,7 +30,8 @@
       "extrait": "Agent de relecture 1. Lire le document en entier avant de commenter. 2. Lister séparément : incohérences (chiffres, termes, dates), oublis évidents, phrases ambiguës. 3. Pour chaque point : citer le…",
       "creeLe": "2026-11-07",
       "modifieLe": "2026-11-07",
-      "path": "packages/exemple-agent-revue"
+      "path": "packages/exemple-agent-revue",
+      "archive": "paquets/exemple-agent-revue.zip"
     },
     {
       "name": "exemple-skill",
@@ -64,7 +65,8 @@
       "extrait": "Synthèse en 5 points 1. Lire le texte fourni en entier. 2. Produire au plus 5 puces, une idée par puce, en français. 3. Ne rien ajouter qui ne figure pas dans le texte. 4. Si le texte est trop court…",
       "creeLe": "2026-11-07",
       "modifieLe": "2026-11-07",
-      "path": "packages/exemple-skill"
+      "path": "packages/exemple-skill",
+      "archive": "paquets/exemple-skill.zip"
     },
     {
       "name": "exemple-skill-traduction",
@@ -99,7 +101,8 @@
       "extrait": "Traduction FR vers EN 1. Traduire l'intégralité du texte, sans résumer ni omettre. 2. Conserver la mise en forme (titres, listes, gras). 3. Garder les noms propres, sigles et valeurs numériques tels…",
       "creeLe": "2026-11-07",
       "modifieLe": "2026-11-07",
-      "path": "packages/exemple-skill-traduction"
+      "path": "packages/exemple-skill-traduction",
+      "archive": "paquets/exemple-skill-traduction.zip"
     }
   ]
 }

@@ -20,6 +20,8 @@ export interface Paquet {
   creeLe: string | null
   modifieLe: string | null
   path: string
+  /** Chemin relatif de l'archive .zip du paquet. */
+  archive?: string
 }
 
 export interface Catalogue {

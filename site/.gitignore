@@ -3,3 +3,4 @@ dist/
 public/catalog.json
 public/contenu.json
 e2e/captures/
+public/paquets/

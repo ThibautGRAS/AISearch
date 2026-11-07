@@ -1,6 +1,8 @@
 # Contribuer
 
 ## Flux
+- Toute modification de `main` passe par une pull request (depuis un fork ou une branche) ; chaque fusion republie le site.
+- Sans Git : l'onglet *Issues* propose un formulaire « Proposer un paquet ».
 - Une branche par paquet ou changement, relue par l'autre personne avant fusion.
 - Versionnage `MAJEUR.MINEUR.CORRECTIF` dans `manifest.json`, changement noté dans le README du paquet.
 
