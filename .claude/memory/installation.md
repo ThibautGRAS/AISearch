@@ -21,6 +21,8 @@ Vite 8, Svelte 5, TypeScript 6 (le 7 est incompatible avec svelte-check), MiniSe
 - Pied de page qui sautait pendant le chargement (CLS 0,9) : `main` réserve la hauteur de l'écran.
 
 ## Reste à faire côté utilisateur
+- Réglage Actions : « Allow GitHub Actions to create and approve pull requests » (Settings → Actions → General), pour que l'Action issue → paquet ouvre la PR seule.
+- Essai réel de l'Action issue → paquet : jamais exécutée sur GitHub (seuls les tests Python locaux ont tourné) ; elle crée une branche et une PR publiques.
 - Activer GitHub Pages (Settings → Pages → Source : GitHub Actions).
 - Choisir une licence.
 - Fournir de vrais paquets (le script de validation bloque e-mails, chemins personnels et secrets).

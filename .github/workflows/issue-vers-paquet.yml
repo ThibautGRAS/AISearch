@@ -1,0 +1,31 @@
+name: Issue vers paquet
+
+# Une issue « [Paquet] … » (formulaire « Proposer un paquet ») devient une branche et une pull request à relire.
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  creer-paquet:
+    if: startsWith(github.event.issue.title, '[Paquet]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Le contenu de l'issue est passé par variables d'environnement, jamais écrit dans la commande.
+      - name: Créer le paquet et ouvrir la pull request
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/issue_vers_paquet.py

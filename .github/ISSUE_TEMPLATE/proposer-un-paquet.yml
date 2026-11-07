@@ -7,7 +7,7 @@ body:
     id: nom
     attributes:
       label: Nom du paquet
-      description: En minuscules, chiffres et tirets (ex. redaction-rapport).
+      description: En minuscules, chiffres et tirets, de 3 à 50 caractères (ex. redaction-rapport).
     validations:
       required: true
   - type: dropdown
@@ -21,14 +21,23 @@ body:
     id: description
     attributes:
       label: À quoi sert-il ?
-      description: Quand l'utiliser, quand ne pas l'utiliser.
+      description: Quand l'utiliser, quand ne pas l'utiliser (une ou deux phrases).
     validations:
       required: true
   - type: textarea
     id: contenu
     attributes:
       label: Contenu proposé
-      description: Collez ici le texte du skill ou de l'agent (rien de confidentiel, le dépôt est public).
+      description: Collez ici le texte du skill ou de l'agent. Rien de confidentiel, le dépôt est public.
+  - type: checkboxes
+    id: assistants
+    attributes:
+      label: Assistants prévus
+      description: Pour lesquels le paquet est écrit. La compatibilité reste « jamais testée » tant qu'un essai réel n'est pas consigné.
+      options:
+        - label: Claude
+        - label: Copilot
+        - label: OpenCode
   - type: checkboxes
     id: verifs
     attributes:
@@ -36,4 +45,3 @@ body:
       options:
         - label: Le contenu ne contient aucun secret ni donnée interne.
           required: true
-        - label: Je l'ai essayé dans au moins un assistant (précisez lequel ci-dessus).

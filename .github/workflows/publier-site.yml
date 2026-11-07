@@ -35,6 +35,9 @@ jobs:
       - name: Valider les paquets et générer le catalogue
         run: python scripts/build_catalog.py
 
+      - name: Tests Python
+        run: python -m unittest discover -s scripts
+
       - name: Installer les dépendances
         run: npm ci
         working-directory: site

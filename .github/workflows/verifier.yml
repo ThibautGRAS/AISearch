@@ -1,0 +1,48 @@
+name: Vérifier
+
+# Contrôles d'une pull request avant relecture (sans publication).
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Valider les paquets et générer le catalogue
+        run: python scripts/build_catalog.py
+
+      - name: Tests Python
+        run: python -m unittest discover -s scripts
+
+      - run: npm ci
+        working-directory: site
+
+      - name: Vérifier les types
+        run: npm run check
+        working-directory: site
+
+      - name: Tests unitaires
+        run: npm test
+        working-directory: site
+
+      - name: Construire le site
+        run: npm run build
+        working-directory: site

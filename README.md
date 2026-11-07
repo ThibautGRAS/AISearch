@@ -41,6 +41,7 @@ npm run dev                          # http://localhost:5173
 Dans `site/` :
 - `npm run check` : types.
 - `npm test` : tests unitaires (recherche, filtres, URL).
+- `python -m unittest discover -s scripts` : tests de la conversion issue → paquet.
 - `npm run e2e` : construit le site puis le teste dans un vrai navigateur (Edge par défaut, `-- --navigateur=chrome` pour Chrome). Aucun navigateur n'est téléchargé.
 
 ## Ajouter un paquet
@@ -48,6 +49,11 @@ Dans `site/` :
 2. Adapter `manifest.json`, le fichier du paquet (`SKILL.md` ou `AGENT.md`), `README.md`, `tests/cas.md`.
 3. Lancer `python scripts/build_catalog.py` : il refuse un manifeste invalide et tout contenu sensible (le dépôt est public).
 4. Ouvrir une branche et demander une relecture ([CONTRIBUTING.md](CONTRIBUTING.md)).
+
+## Proposer un paquet sans Git
+Le bouton **Proposer un paquet** du site ouvre un formulaire GitHub (compte GitHub requis). Une GitHub Action ([issue-vers-paquet.yml](.github/workflows/issue-vers-paquet.yml)) en tire un dossier `packages/<nom>/`, le fait passer par la validation (contenus sensibles bloqués), puis ouvre une pull request à relire avant toute fusion. Le paquet est créé avec la compatibilité « jamais testée ».
+
+Réglage à faire une fois sur GitHub pour que la pull request s'ouvre toute seule : *Settings → Actions → General → Workflow permissions → cocher « Allow GitHub Actions to create and approve pull requests »*. Sans lui, l'Action pousse la branche et poste dans l'issue un lien pour ouvrir la pull request à la main.
 
 ## Publication
 Chaque push sur `main` lance [le workflow](.github/workflows/publier-site.yml) : validation des paquets, types, tests, test de bout en bout dans Chrome, puis déploiement sur GitHub Pages.
