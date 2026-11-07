@@ -1,20 +1,60 @@
-# Catalogue de paquets IA
+# AISearch — catalogue de paquets IA
 
-Des skills et agents écrits une fois, installables dans plusieurs assistants (Claude, GitHub Copilot, OpenCode).
+Des skills, agents et connecteurs écrits une fois, installables dans plusieurs assistants (Claude, GitHub Copilot, OpenCode), avec un moteur de recherche en français.
 
-## Utiliser
+**Site :** https://thibautgras.github.io/AISearch/ *(en ligne une fois GitHub Pages activé, voir plus bas)*
+
+![Liste des paquets](docs/captures/liste.png)
+
+| Page de détail | Thème sombre |
+|---|---|
+| ![Détail](docs/captures/detail.png) | ![Sombre](docs/captures/liste-sombre.png) |
+
+## Ce que fait le site
+- Recherche en direct : insensible aux accents et à la casse, tolère une faute légère, accepte un début de mot, cherche dans le contenu complet des paquets.
+- Filtres par type, assistant et tags ; tri par pertinence, nom ou date. L'état est dans l'URL : un lien de recherche se partage.
+- Page de détail : contenu du paquet, commandes d'installation à copier, compatibilité, sources, paquets proches.
+- Clavier : `/` pour la recherche, `↓` et flèches pour parcourir les cartes, `Échap` pour effacer.
+- Thèmes clair et sombre, affichage mobile.
+
+## Utiliser un paquet
+Sans cloner : l'archive du dépôt se télécharge depuis le bouton **Code → Download ZIP** sur GitHub.
+
+Avec Git :
 ```bash
 git clone https://github.com/ThibautGRAS/AISearch
 cd AISearch
 python scripts/install.py exemple-skill --cible claude --dest /chemin/vers/mon/projet
 ```
-Cibles : `claude`, `copilot`, `opencode`. Voir `python scripts/install.py --help`.
+Cibles : `claude`, `copilot`, `opencode`.
+
+## Lancer le site en local
+Prérequis : Python 3.11+, Node.js 22+.
+```bash
+python scripts/build_catalog.py      # valide les paquets, génère catalog.json et contenu.json
+cd site
+npm install
+npm run dev                          # http://localhost:5173
+```
+
+## Vérifications
+Dans `site/` :
+- `npm run check` : types.
+- `npm test` : tests unitaires (recherche, filtres, URL).
+- `npm run e2e` : construit le site puis le teste dans un vrai navigateur (Edge par défaut, `-- --navigateur=chrome` pour Chrome). Aucun navigateur n'est téléchargé.
 
 ## Ajouter un paquet
 1. Copier `packages/exemple-skill/` vers `packages/<nom>/`.
-2. Adapter `manifest.json`, `SKILL.md`, `README.md`, `tests/cas.md`.
-3. Lancer `python scripts/build_catalog.py`.
-4. Ouvrir une branche et demander une relecture (voir `CONTRIBUTING.md`).
+2. Adapter `manifest.json`, le fichier du paquet (`SKILL.md` ou `AGENT.md`), `README.md`, `tests/cas.md`.
+3. Lancer `python scripts/build_catalog.py` : il refuse un manifeste invalide et tout contenu sensible (le dépôt est public).
+4. Ouvrir une branche et demander une relecture ([CONTRIBUTING.md](CONTRIBUTING.md)).
+
+## Publication
+Chaque push sur `main` lance [le workflow](.github/workflows/publier-site.yml) : validation des paquets, types, tests, test de bout en bout dans Chrome, puis déploiement sur GitHub Pages.
+
+**À faire une seule fois :** sur GitHub, *Settings → Pages → Build and deployment → Source : GitHub Actions*.
 
 ## Statut
-Squelette initial. Les chemins d'installation par assistant n'ont pas été vérifiés en conditions réelles.
+- Le catalogue ne contient que 3 paquets d'exemple, jamais essayés dans un vrai assistant : la compatibilité est affichée « jamais testé ».
+- Les chemins d'installation par assistant (`.claude/skills/`, `.github/prompts/`, `.opencode/agent/`) sont des hypothèses non vérifiées.
+- Pas de licence choisie pour l'instant.

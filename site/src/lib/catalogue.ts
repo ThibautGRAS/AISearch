@@ -3,6 +3,12 @@ import type { Contenus } from './search'
 
 export const SCHEMA_ATTENDU = 1
 
+export interface DonneesContenu {
+  contenus: Contenus
+  /** Texte de CONTRIBUTING.md. */
+  contribuer: string
+}
+
 export async function chargerCatalogue(): Promise<Catalogue> {
   const rep = await fetch(`${import.meta.env.BASE_URL}catalog.json`)
   if (!rep.ok) throw new Error(`catalog.json introuvable (${rep.status})`)
@@ -13,10 +19,10 @@ export async function chargerCatalogue(): Promise<Catalogue> {
   return cat
 }
 
-export async function chargerContenus(): Promise<Contenus> {
+export async function chargerContenus(): Promise<DonneesContenu> {
   const rep = await fetch(`${import.meta.env.BASE_URL}contenu.json`)
   if (!rep.ok) throw new Error(`contenu.json introuvable (${rep.status})`)
-  const data = (await rep.json()) as { schemaVersion: number; contenus: Contenus }
+  const data = (await rep.json()) as { schemaVersion: number; contenus: Contenus; contribuer?: string }
   if (data.schemaVersion !== SCHEMA_ATTENDU) throw new Error('Schéma de contenu inattendu')
-  return data.contenus
+  return { contenus: data.contenus, contribuer: data.contribuer ?? '' }
 }

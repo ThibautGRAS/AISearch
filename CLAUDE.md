@@ -21,3 +21,6 @@ Interface de recherche : Vite + Svelte 5 + TypeScript 6 (TypeScript 7 incompatib
 - `npm run dev` / `npm run build` / `npm run check` dans `site/`.
 - `build_catalog.py` copie `catalog.json` et `contenu.json` dans `site/public/` (copies non versionnées).
 - Le script refuse les manifestes invalides et tout motif sensible (dépôt public).
+- `npm test` (unitaires), `npm run e2e` (navigateur réel, Edge ou Chrome installé), `npm run check` (types).
+- Déploiement : `.github/workflows/publier-site.yml` (GitHub Pages, source « GitHub Actions » à activer à la main dans les réglages du dépôt).
+- Pièges et mesures : `.claude/memory/installation.md`.

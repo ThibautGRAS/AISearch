@@ -1,0 +1,72 @@
+name: Publier le site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construire:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # historique complet : dates de création et de mise à jour des paquets
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Valider les paquets et générer le catalogue
+        run: python scripts/build_catalog.py
+
+      - name: Installer les dépendances
+        run: npm ci
+        working-directory: site
+
+      - name: Vérifier les types
+        run: npm run check
+        working-directory: site
+
+      - name: Tests unitaires
+        run: npm test
+        working-directory: site
+
+      - name: Construire le site
+        run: npm run build
+        working-directory: site
+
+      - name: Test de bout en bout (Chrome)
+        run: node e2e/smoke.mjs --navigateur=chrome
+        working-directory: site
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deployer:
+    needs: construire
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,133 +1,108 @@
 <script lang="ts">
-  import { chargerCatalogue, chargerContenus } from './lib/catalogue'
-  import { creerMoteur, type Contenus } from './lib/search'
+  import { chargerCatalogue, chargerContenus, type DonneesContenu } from './lib/catalogue'
+  import { ETAT_VIDE, hashListe } from './lib/etat'
+  import { routeur } from './lib/routeur.svelte'
+  import { theme } from './lib/theme.svelte'
   import type { Catalogue } from './lib/types'
-  import PaquetCard from './components/PaquetCard.svelte'
+  import PageContribuer from './components/PageContribuer.svelte'
+  import PageDetail from './components/PageDetail.svelte'
+  import PageIntrouvable from './components/PageIntrouvable.svelte'
+  import PageListe from './components/PageListe.svelte'
+  import { DEPOT } from './lib/config'
 
   let catalogue = $state<Catalogue | null>(null)
-  let contenus = $state<Contenus>({})
+  let contenu = $state<DonneesContenu | null>(null)
   let erreur = $state<string | null>(null)
-  let requete = $state('')
-  let champ: HTMLInputElement | undefined = $state()
 
   chargerCatalogue().then((c) => (catalogue = c)).catch((e) => (erreur = e.message))
   // Le texte complet est chargé ensuite : la recherche par nom marche sans attendre.
-  chargerContenus().then((c) => (contenus = c)).catch(() => {})
+  chargerContenus().then((c) => (contenu = c)).catch(() => {})
 
-  const moteur = $derived(catalogue ? creerMoteur(catalogue.packages, contenus) : null)
-  const resultats = $derived.by(() => {
-    if (!catalogue || !moteur) return []
-    const parNom = new Map(catalogue.packages.map((p) => [p.name, p]))
-    return moteur.chercher(requete).flatMap((r) => parNom.get(r.name) ?? [])
+  const route = $derived(routeur.route)
+  const paquet = $derived(route.page === 'paquet' ? catalogue?.packages.find((p) => p.name === route.nom) : undefined)
+
+  $effect(() => {
+    const base = 'AISearch'
+    if (route.page === 'paquet') document.title = `${route.nom} — ${base}`
+    else if (route.page === 'contribuer') document.title = `Contribuer — ${base}`
+    else if (route.page === 'introuvable') document.title = `Introuvable — ${base}`
+    else document.title = `${base} — catalogue de paquets IA`
   })
-  const tagsPopulaires = $derived.by(() => {
-    const n = new Map<string, number>()
-    for (const p of catalogue?.packages ?? []) for (const t of p.tags) n.set(t, (n.get(t) ?? 0) + 1)
-    return [...n].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 6).map(([t]) => t)
-  })
-
-  function toucheGlobale(e: KeyboardEvent) {
-    const saisie = (e.target as HTMLElement)?.matches?.('input, textarea')
-    if (e.key === '/' && !saisie && !e.ctrlKey && !e.metaKey) {
-      e.preventDefault()
-      champ?.focus()
-    }
-  }
-
-  function cartes(): HTMLElement[] {
-    return [...document.querySelectorAll<HTMLElement>('[data-carte]')]
-  }
-  function toucheChamp(e: KeyboardEvent) {
-    if (e.key === 'Escape') requete = ''
-    if (e.key === 'ArrowDown') { e.preventDefault(); cartes()[0]?.focus() }
-  }
-  function toucheCarte(e: KeyboardEvent) {
-    const liste = cartes()
-    const i = liste.indexOf(e.target as HTMLElement)
-    if (i < 0) return
-    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); liste[Math.min(i + 1, liste.length - 1)].focus() }
-    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); if (i === 0) champ?.focus(); else liste[i - 1].focus() }
-    if (e.key === 'Escape') champ?.focus()
-  }
 </script>
 
-<svelte:window onkeydown={toucheGlobale} />
-
 <header class="entete">
-  <h1>AISearch</h1>
-  <p>Catalogue de skills, agents et connecteurs IA : construits une fois, réutilisables partout.</p>
-  <div class="recherche">
-    <label class="sr-only" for="q">Rechercher un paquet</label>
-    <input
-      id="q"
-      type="search"
-      bind:this={champ}
-      bind:value={requete}
-      onkeydown={toucheChamp}
-      placeholder="Rechercher un paquet…  (touche /)"
-      autocomplete="off"
-    />
+  <div class="conteneur barre">
+    <a class="marque" href={hashListe(ETAT_VIDE)}>
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="var(--accent)" />
+        <circle cx="14" cy="14" r="6" fill="none" stroke="var(--sur-accent)" stroke-width="2.4" />
+        <path d="m19 19 5 5" stroke="var(--sur-accent)" stroke-width="2.4" stroke-linecap="round" />
+      </svg>
+      AISearch
+    </a>
+    <nav aria-label="Navigation principale">
+      <a class="lien-catalogue" href={hashListe(ETAT_VIDE)}>Catalogue</a>
+      <a href="#/contribuer">Contribuer</a>
+      <a href={DEPOT} rel="noopener">GitHub ↗</a>
+      <button
+        type="button"
+        class="theme"
+        onclick={() => theme.basculer()}
+        aria-label={theme.actuel === 'dark' ? 'Passer au thème clair' : 'Passer au thème sombre'}
+        title={theme.actuel === 'dark' ? 'Thème clair' : 'Thème sombre'}
+      >
+        {#if theme.actuel === 'dark'}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+          </svg>
+        {:else}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z" />
+          </svg>
+        {/if}
+      </button>
+    </nav>
   </div>
 </header>
 
-<main>
+<main class="conteneur">
   {#if erreur}
     <p class="etat" role="alert">Erreur de chargement : {erreur}</p>
   {:else if !catalogue}
     <p class="etat">Chargement du catalogue…</p>
-  {:else}
-    <p class="compteur" aria-live="polite">
-      {#if requete.trim()}
-        {resultats.length} résultat{resultats.length > 1 ? 's' : ''} sur {catalogue.packages.length}
-      {:else}
-        {catalogue.packages.length} paquet{catalogue.packages.length > 1 ? 's' : ''}
-      {/if}
-    </p>
-
-    {#if resultats.length === 0}
-      <div class="etat">
-        <p><strong>Aucun résultat pour « {requete} ».</strong></p>
-        <p>Vérifiez l'orthographe ou essayez un mot plus court. Quelques idées :</p>
-        <ul class="suggestions">
-          {#each tagsPopulaires as t}
-            <li><button type="button" onclick={() => (requete = t)}>{t}</button></li>
-          {/each}
-        </ul>
-      </div>
+  {:else if route.page === 'liste'}
+    <PageListe {catalogue} contenus={contenu?.contenus ?? {}} etat={route.etat} onetat={(e) => routeur.majListe(e)} />
+  {:else if route.page === 'paquet'}
+    {#if paquet}
+      <PageDetail {paquet} {catalogue} contenus={contenu?.contenus ?? {}} contenuCharge={contenu !== null} />
     {:else}
-      <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-      <ul class="grille" onkeydown={toucheCarte}>
-        {#each resultats as p (p.name)}
-          <li><PaquetCard paquet={p} {requete} ontag={(t) => { requete = t; champ?.focus() }} /></li>
-        {/each}
-      </ul>
+      <PageIntrouvable message={`Aucun paquet nommé « ${route.nom} ».`} />
     {/if}
+  {:else if route.page === 'contribuer'}
+    <PageContribuer texte={contenu?.contribuer ?? ''} charge={contenu !== null} />
+  {:else}
+    <PageIntrouvable />
   {/if}
 </main>
 
+<footer class="pied">
+  <div class="conteneur">
+    Catalogue open source · <a href={DEPOT} rel="noopener">code et paquets sur GitHub</a>
+  </div>
+</footer>
+
 <style>
-  .entete { max-width: 1100px; margin: 0 auto; padding: 3rem 1rem 1.5rem; }
-  h1 { margin: 0; font-size: clamp(2rem, 5vw, 2.8rem); letter-spacing: -0.02em; }
-  .entete p { color: var(--texte-doux); margin: 0.4rem 0 1.5rem; max-width: 40rem; }
-  .recherche input {
-    width: 100%; font: inherit; font-size: 1.1rem; padding: 0.9rem 1.2rem;
-    border-radius: 99px; border: 1px solid var(--bordure);
-    background: var(--surface); color: var(--texte); box-shadow: var(--ombre);
-  }
-  .recherche input:focus { border-color: var(--accent); }
-  main { max-width: 1100px; margin: 0 auto; padding: 0 1rem 4rem; }
-  .compteur { color: var(--texte-doux); font-size: 0.9rem; margin: 0 0 1rem; }
-  .grille {
-    list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-  }
-  .grille > li { display: flex; }
-  .grille > li > :global(*) { flex: 1; }
-  .etat { text-align: center; color: var(--texte-doux); padding: 2rem 0; }
-  .suggestions { list-style: none; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; padding: 0; }
-  .suggestions button {
-    font: inherit; cursor: pointer; padding: 0.3rem 0.9rem; border-radius: 99px;
-    border: 1px solid var(--bordure); background: var(--surface); color: var(--accent);
-  }
-  .suggestions button:hover { border-color: var(--accent); }
+  .conteneur { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+  .entete { border-bottom: 1px solid var(--bordure); background: color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 10; }
+  .barre { display: flex; align-items: center; justify-content: space-between; height: 3.5rem; gap: 1rem; }
+  .marque { display: inline-flex; align-items: center; gap: 0.6rem; font-weight: 700; font-size: 1.1rem; color: var(--texte); text-decoration: none; }
+  nav { display: flex; align-items: center; gap: 1.1rem; font-size: 0.92rem; }
+  nav a { color: var(--texte-doux); text-decoration: none; white-space: nowrap; }
+  nav a:hover { color: var(--accent); }
+  .theme { display: inline-flex; background: none; border: 1px solid var(--bordure); color: var(--texte); border-radius: 99px; padding: 0.35rem; cursor: pointer; }
+  .theme:hover { border-color: var(--accent); color: var(--accent); }
+  main { min-height: 100vh; min-height: 100svh; }
+  .etat { text-align: center; color: var(--texte-doux); padding: 4rem 0; }
+  .pied { border-top: 1px solid var(--bordure); padding: 1.5rem 0; color: var(--texte-doux); font-size: 0.88rem; }
+  @media (max-width: 560px) { nav { gap: 0.8rem; font-size: 0.85rem; } .lien-catalogue { display: none; } }
 </style>

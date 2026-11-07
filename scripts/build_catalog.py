@@ -2,7 +2,7 @@
 
 Sorties (racine du dépôt, puis copie dans site/public/) :
   - catalog.json : index léger (cartes de recherche)
-  - contenu.json : textes complets (SKILL.md/AGENT.md + README), chargés à la demande
+  - contenu.json : textes complets (SKILL.md/AGENT.md + README) et CONTRIBUTING.md, chargés à la demande
 """
 import json
 import re
@@ -138,7 +138,8 @@ def main():
 
     meta = {"schemaVersion": SCHEMA_VERSION, "genereLe": datetime.now(timezone.utc).isoformat(timespec="seconds")}
     catalogue = {**meta, "packages": entrees}
-    contenu = {**meta, "contenus": contenus}
+    contrib = RACINE / "CONTRIBUTING.md"
+    contenu = {**meta, "contenus": contenus, "contribuer": contrib.read_text(encoding="utf-8") if contrib.exists() else ""}
     for dossier_sortie in (RACINE, RACINE / "site" / "public"):
         if dossier_sortie.exists():
             for nom_fichier, data in (("catalog.json", catalogue), ("contenu.json", contenu)):
