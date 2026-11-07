@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "genereLe": "2026-11-07T15:16:46+00:00",
+  "genereLe": "2026-11-07T15:20:46+00:00",
   "contenus": {
     "exemple-agent-revue": {
       "entree": "# Agent de relecture\n\n1. Lire le document en entier avant de commenter.\n2. Lister séparément : incohérences (chiffres, termes, dates), oublis évidents, phrases ambiguës.\n3. Pour chaque point : citer le passage, expliquer le problème en une phrase.\n4. Ne rien corriger sans demande ; proposer au plus une reformulation par point.\n5. Si rien n'est trouvé, le dire explicitement.\n",

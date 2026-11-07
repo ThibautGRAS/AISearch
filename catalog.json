@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "genereLe": "2026-11-07T15:16:46+00:00",
+  "genereLe": "2026-11-07T15:20:46+00:00",
   "packages": [
     {
       "name": "exemple-agent-revue",
@@ -28,8 +28,8 @@
         }
       ],
       "extrait": "Agent de relecture 1. Lire le document en entier avant de commenter. 2. Lister séparément : incohérences (chiffres, termes, dates), oublis évidents, phrases ambiguës. 3. Pour chaque point : citer le…",
-      "creeLe": null,
-      "modifieLe": null,
+      "creeLe": "2026-11-07",
+      "modifieLe": "2026-11-07",
       "path": "packages/exemple-agent-revue"
     },
     {
@@ -97,8 +97,8 @@
         }
       ],
       "extrait": "Traduction FR vers EN 1. Traduire l'intégralité du texte, sans résumer ni omettre. 2. Conserver la mise en forme (titres, listes, gras). 3. Garder les noms propres, sigles et valeurs numériques tels…",
-      "creeLe": null,
-      "modifieLe": null,
+      "creeLe": "2026-11-07",
+      "modifieLe": "2026-11-07",
       "path": "packages/exemple-skill-traduction"
     }
   ]
